@@ -402,6 +402,13 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  // ════════════════════════════════════════════════════════════
+// SUPABASE CONFIG
+// ════════════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://dfcqredvuuosmmjforwf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmY3FyZWR2dXVvc21tamZvcndmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NTc2NTUsImV4cCI6MjA5MTAzMzY1NX0.0MnVvys_Vcc8vjiQJnzeZYS9_itSFgQ1WSziz2TTsmM';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 // ═══════════════════════════════════════════
 // CONFIG — Nyangw'ale Family Group (NYAFAG) v3
 // ═══════════════════════════════════════════
