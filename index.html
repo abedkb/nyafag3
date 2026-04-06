@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nyangw'ale Family Group (NYAFAG)</title>
+  <style>
+    :root{
+      --primary:#1a6b3c;
+      --primary-dark:#0f4726;
+      --gold:#c47c0a;
+      --danger:#dc3545;
+      --success:#198754;
+      --warning:#ffc107;
+      --bg:#f0f7f3;
+      --card:#ffffff;
+      --text:#1e293b;
+      --muted:#64748b;
+      --border:#d0e8d8;
+      --shadow:0 10px 30px rgba(10,50,26,.09);
+      --radius:18px;
+      --announce:#1a6b3c;
+      --announce-light:#e8f5ed;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    .screen{display:none;min-height:100vh}
+    .screen.active{display:block}
+    .page-wrap{max-width:1100px;margin:0 auto;padding:16px;}
+    .topbar{background:var(--primary);color:#fff;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+    .topbar-title{font-size:20px;font-weight:800;}
+    .topbar-sub{font-size:13px;opacity:.95;margin-top:4px;}
+    .topbar-right{display:flex;gap:10px;align-items:center;}
+    .logout-btn{border:none;background:#fff;color:var(--primary-dark);padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer;}
+    .hero{padding:40px 16px 20px;text-align:center;background:linear-gradient(160deg,#0f4726 0%,#1a6b3c 50%,#2d9b5a 100%);border-radius:0 0 32px 32px;margin-bottom:16px;}
+    .hero h1{font-size:32px;margin-bottom:6px;color:#fff;font-weight:900;letter-spacing:-.5px;}
+    .hero-badge-nyafag{display:inline-block;background:#c47c0a;color:#fff;font-size:11px;font-weight:800;padding:3px 14px;border-radius:999px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+    .hero p{color:rgba(255,255,255,0.82);max-width:760px;margin:0 auto;line-height:1.7;font-size:14px;}
+    .welcome-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:16px;}
+    .card-title{font-size:18px;font-weight:800;margin-bottom:14px;}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:var(--text);}
+    .form-input,.form-select,textarea{width:100%;border:1px solid var(--border);background:#fff;padding:12px 14px;border-radius:12px;outline:none;font-size:14px;}
+    .form-input:focus,.form-select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,110,253,.12);}
+    .btn{border:none;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:800;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-outline{background:#fff;border:1px solid var(--border);color:var(--text)}
+    .btn-gold{background:var(--gold);color:#111}
+    .btn-green{background:var(--success);color:#fff}
+    .btn-red{background:var(--danger);color:#fff}
+    .btn-purple{background:var(--announce);color:#fff}
+    .btn-sm{padding:9px 12px;font-size:12px}
+    .wa-btn{background:#25D366;color:#fff;border:none;padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:10px;}
+    .alert{padding:12px 14px;border-radius:12px;font-size:13px;margin-bottom:14px;line-height:1.6;}
+    .alert-info{background:#eaf3ff;color:#0b4ea2}
+    .alert-success{background:#e8fff2;color:#0f7a47}
+    .alert-error{background:#fff0f2;color:#b42318}
+    .alert-warning{background:#fff8e1;color:#8a6100}
+    .alert-announce{background:var(--announce-light);color:var(--announce)}
+    .stat-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:16px;}
+    .stat-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:var(--shadow);}
+    .stat-num{font-size:26px;font-weight:900;margin-bottom:6px;}
+    .stat-lbl{font-size:13px;color:var(--muted);font-weight:700;}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+    .tab{padding:11px 14px;background:#fff;border:1px solid var(--border);border-radius:999px;cursor:pointer;font-weight:800;font-size:13px;}
+    .tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+    .member-row{display:flex;justify-content:space-between;gap:14px;align-items:center;border-bottom:1px solid var(--border);padding:14px 0;flex-wrap:wrap;}
+    .member-avatar{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;}
+    .member-info{flex:1;min-width:180px}
+    .member-name{font-weight:800;font-size:14px}
+    .member-phone{font-size:12px;color:var(--muted);margin-top:4px}
+    .member-actions{display:flex;gap:8px;flex-wrap:wrap;}
+    .badge{display:inline-flex;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:800;text-transform:capitalize;}
+    .badge-pending{background:#fff8e1;color:#8a6100}
+    .badge-approved{background:#e8fff2;color:#0f7a47}
+    .badge-rejected{background:#fff0f2;color:#b42318}
+    .badge-active{background:#e8fff2;color:#0f7a47}
+    .badge-inactive{background:#eef2f7;color:#475569}
+    .badge-announce{background:var(--announce-light);color:var(--announce)}
+    .dai-card{border:1px solid var(--border);border-radius:16px;padding:14px;background:#fff;margin-bottom:12px;}
+    .dai-card-header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start;}
+    .dai-title{font-size:15px;font-weight:800}
+    .dai-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:16px;}
+    table{width:100%;border-collapse:collapse;background:#fff;min-width:700px;}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--border);text-align:left;font-size:13px;}
+    th{background:#f8fafc;font-weight:900;}
+    .modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:999;}
+    .modal-bg.open{display:flex}
+    .modal-box{width:min(700px,100%);background:#fff;border-radius:22px;box-shadow:var(--shadow);overflow:hidden;}
+    .modal-title{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--border);font-weight:900;}
+    .modal-close{background:none;border:none;font-size:18px;cursor:pointer;}
+    #modal-body{padding:18px}
+    .toast{position:fixed;bottom:24px;right:24px;background:#111827;color:#fff;padding:12px 16px;border-radius:14px;opacity:0;transform:translateY(20px);transition:.25s ease;z-index:9999;font-size:13px;font-weight:700;}
+    .toast.show{opacity:1;transform:translateY(0);}
+    .tegemezi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+    .teg-item{border:1px solid var(--border);border-radius:16px;padding:14px;background:#fff;}
+    .teg-item.filled{border-left:5px solid var(--primary);}
+    .teg-role{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:800;}
+    .teg-name{font-size:14px;font-weight:800;}
+    .announce-card{border:1px solid #d8b4fe;border-left:5px solid var(--announce);border-radius:16px;padding:16px;background:var(--announce-light);margin-bottom:12px;position:relative;}
+    .announce-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+    .announce-card-title{font-size:15px;font-weight:800;color:var(--announce);}
+    .announce-card-body{font-size:13px;color:var(--text);margin-top:8px;line-height:1.7;}
+    .announce-card-meta{font-size:11px;color:var(--muted);margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;}
+    .announce-card-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+    .inbox-announce{border:1px solid #d8b4fe;border-radius:14px;padding:14px;background:var(--announce-light);margin-bottom:10px;}
+    .inbox-announce-title{font-weight:800;font-size:14px;color:var(--announce);}
+    .inbox-announce-body{font-size:13px;color:var(--text);margin-top:6px;line-height:1.6;}
+    .inbox-announce-meta{font-size:11px;color:var(--muted);margin-top:6px;}
+    .inbox-announce-unread{display:inline-block;background:var(--announce);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;}
+    .admin-wrap{max-width:1200px;margin:0 auto;padding:16px;}
+    .audience-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;max-height:250px;overflow-y:auto;border:1px solid var(--border);border-radius:12px;padding:10px;}
+    .audience-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;cursor:pointer;background:#fff;border:1px solid var(--border);}
+    .audience-item:hover{border-color:var(--announce);background:var(--announce-light);}
+    .audience-item input[type=checkbox]{accent-color:var(--announce);}
+    @media(max-width:768px){.hero h1{font-size:24px}.topbar{padding:14px}.page-wrap,.admin-wrap{padding:12px}}
+  </style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div class="screen active" id="screen-welcome">
+  <div class="hero">
+    <div class="hero-badge-nyafag">Nyangw'ale Family Group</div>
+    <h1>NYAFAG</h1>
+    <p>Mfumo wa usajili wa wanachama, tegemezi, maombi ya rambirambi, malipo, matangazo na usimamizi wa kikundi cha <strong>Nyangw'ale Family Group (NYAFAG)</strong>.</p>
+    <div class="welcome-actions">
+      <button class="btn btn-primary" onclick="showScreen('screen-register')">📝 Jisajili</button>
+      <button class="btn btn-outline" onclick="showScreen('screen-login')">🔐 Ingia Mwanachama</button>
+      <button class="btn btn-gold" onclick="showScreen('screen-admin-login')">⚙ Ingia Kiongozi</button>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="screen" id="screen-register">
+  <div style="background:var(--primary-dark);padding:14px 18px;display:flex;align-items:center;gap:10px;">
+    <button onclick="showScreen('screen-welcome')" style="background:none;border:none;color:white;font-size:22px;cursor:pointer;">←</button>
+    <div><p style="color:white;font-weight:800;font-size:15px;">Usajili wa Mwanachama</p></div>
+  </div>
+  <div class="page-wrap">
+    <div class="card">
+      <div class="card-title">📝 Fomu ya Usajili</div>
+      <div id="reg-alert"></div>
+      <div class="form-group"><label>Jina Kamili (Majina matatu au zaidi)</label><input type="text" class="form-input" id="reg-jina" placeholder="mfano: Juma Salum Ally"/></div>
+      <div class="form-group"><label>Namba ya Simu</label><input type="text" class="form-input" id="reg-simu" placeholder="07XXXXXXXX"/></div>
+      <div class="form-group"><label>PIN ya Akaunti (Nambari 4)</label><input type="password" class="form-input" id="reg-pin" maxlength="4" placeholder="1234"/></div>
+      <div class="form-group"><label>Rudia PIN</label><input type="password" class="form-input" id="reg-pin2" maxlength="4" placeholder="1234"/></div>
+    </div>
+    <div class="card">
+      <div class="card-title">👨‍👩‍👧‍👦 Taarifa za Tegemezi</div>
+      <div class="form-group"><label>Baba</label><input type="text" class="form-input" id="teg-baba" placeholder="Jina la Baba (hiari)"/></div>
+      <div class="form-group"><label>Mama</label><input type="text" class="form-input" id="teg-mama" placeholder="Jina la Mama (hiari)"/></div>
+      <div class="form-group"><label>Baba Mkwe</label><input type="text" class="form-input" id="teg-baba-mkwe" placeholder="Jina la Baba Mkwe (hiari)"/></div>
+      <div class="form-group"><label>Mama Mkwe</label><input type="text" class="form-input" id="teg-mama-mkwe" placeholder="Jina la Mama Mkwe (hiari)"/></div>
+      <div class="form-group"><label>Mwenzi</label><input type="text" class="form-input" id="teg-mwenzi" placeholder="Jina la Mwenzi (hiari)"/></div>
+      <div id="watoto-container"></div>
+      <button class="btn btn-outline" onclick="ongezaMtotoForm()">➕ Ongeza Mtoto</button>
+    </div>
+    <div class="card">
+      <button class="btn btn-primary" onclick="doRegister()">✅ Kamilisha Usajili</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER LOGIN -->
+<div class="screen" id="screen-login">
+  <div style="background:var(--primary-dark);padding:14px 18px;display:flex;align-items:center;gap:10px;">
+    <button onclick="showScreen('screen-welcome')" style="background:none;border:none;color:white;font-size:22px;cursor:pointer;">←</button>
+    <div><p style="color:white;font-weight:800;font-size:15px;">Ingia Mwanachama</p></div>
+  </div>
+  <div class="page-wrap">
+    <div class="card">
+      <div class="card-title">🔐 Ingia</div>
+      <div id="login-alert"></div>
+      <div class="form-group"><label>Namba ya Simu</label><input type="text" class="form-input" id="login-simu" placeholder="07XXXXXXXX"/></div>
+      <div class="form-group"><label>PIN</label><input type="password" class="form-input" id="login-pin" maxlength="4" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn btn-primary" onclick="doLogin()">Ingia</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER DASHBOARD -->
+<div class="screen" id="screen-member">
+  <div class="topbar">
+    <div>
+      <p class="topbar-title">NYAFAG</p>
+      <p class="topbar-sub" id="mem-topbar-name">—</p>
+    </div>
+    <div class="topbar-right">
+      <button class="logout-btn" onclick="doLogout()">Toka</button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num" id="mem-salio">TZS 0</div><div class="stat-lbl">Salio</div></div>
+      <div class="stat-card"><div class="stat-num" id="mem-rambirambi-count">0</div><div class="stat-lbl">Rambirambi</div></div>
+      <div class="stat-card"><div class="stat-num" id="mem-teg-count">0</div><div class="stat-lbl">Tegemezi</div></div>
+      <div class="stat-card"><div class="stat-num" id="mem-unread-badge">0</div><div class="stat-lbl">Matangazo Mapya</div></div>
+    </div>
+    <div class="card" id="mem-penalty-banner" style="display:none;">
+      <div class="card-title">⚠ Tahadhari ya Salio</div>
+      <p id="mem-penalty-text" style="font-size:14px;color:var(--muted);"></p>
+    </div>
+    <div class="card">
+      <div class="card-title">👤 Taarifa za Mwanachama</div>
+      <p style="margin-bottom:8px;"><strong>Jina:</strong> <span id="mem-jina">—</span></p>
+      <p><strong>Simu:</strong> <span id="mem-simu">—</span></p>
+    </div>
+    <div class="tabs">
+      <div class="tab active" id="mtab-nyumbani-btn" onclick="showMemberTab('nyumbani')">🏠 Nyumbani</div>
+      <div class="tab" id="mtab-matangazo-btn" onclick="showMemberTab('matangazo')">📢 Matangazo</div>
+      <div class="tab" id="mtab-tegemezi-btn" onclick="showMemberTab('tegemezi')">👨‍👩‍👧‍👦 Tegemezi</div>
+      <div class="tab" id="mtab-dai-btn" onclick="showMemberTab('dai')">📋 Ombi la Rambirambi</div>
+      <div class="tab" id="mtab-historia-btn" onclick="showMemberTab('historia')">🧾 Historia ya Rambirambi</div>
+    </div>
+    <div id="mtab-nyumbani"><div id="member-inbox-holder"></div></div>
+    <div id="mtab-matangazo" style="display:none;">
+      <div class="card">
+        <div class="card-title">📢 Matangazo Yote</div>
+        <div id="member-announcements-full"></div>
+      </div>
+    </div>
+    <div id="mtab-tegemezi" style="display:none;">
+      <div class="card">
+        <div class="card-title">📌 Tegemezi Waliosajiliwa</div>
+        <div id="teg-list-display"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">✏ Hariri / Ongeza Tegemezi</div>
+        <div id="teg-add-alert"></div>
+        <div id="teg-add-form"></div>
+        <button class="btn btn-outline" onclick="ongezaMtotoEditField()">➕ Ongeza Mtoto</button>
+        <br><br>
+        <button class="btn btn-primary" onclick="hifadhiTegemezi()">💾 Hifadhi Tegemezi</button>
+      </div>
+    </div>
+    <div id="mtab-dai" style="display:none;">
+      <div class="card">
+        <div class="card-title">📋 Ombi la Rambirambi</div>
+        <div id="dai-alert"></div>
+        <div class="form-group"><label>Chagua Tegemezi</label><select class="form-select" id="rambirambi-tegemezi"><option value="">Chagua tegemezi...</option></select></div>
+        <div class="form-group"><label>Jina la Marehemu</label><input type="text" class="form-input" id="rambirambi-jina-marehemu" placeholder="Andika jina la marehemu"/></div>
+        <div class="form-group"><label>Tarehe ya Kifo</label><input type="date" class="form-input" id="rambirambi-tarehe"/></div>
+        <div class="form-group"><label>Maelezo ya Ziada (hiari)</label><textarea class="form-input" id="rambirambi-maelezo" rows="2" placeholder="Maelezo yoyote ya ziada..."></textarea></div>
+        <button class="btn btn-primary" onclick="thibitishaDai()">🔍 Thibitisha na Tuma</button>
+      </div>
+    </div>
+    <div id="mtab-historia" style="display:none;">
+      <div id="historia-rambirambi-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="screen" id="screen-admin-login">
+  <div style="background:var(--primary-dark);padding:14px 18px;display:flex;align-items:center;gap:10px;">
+    <button onclick="showScreen('screen-welcome')" style="background:none;border:none;color:white;font-size:22px;cursor:pointer;">←</button>
+    <div><p style="color:white;font-weight:800;font-size:15px;">Viongozi wa Kikundi</p></div>
+  </div>
+  <div class="page-wrap">
+    <div style="height:14px;"></div>
+    <div class="card">
+      <div class="card-title">⚙ Ingia kama Kiongozi</div>
+      <div id="admin-login-alert"></div>
+      <div class="form-group"><label>Jina la Mtumiaji</label><input type="text" class="form-input" id="admin-user" placeholder="andika username"/></div>
+      <div class="form-group"><label>Nenosiri</label><input type="password" class="form-input" id="admin-pw" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+      <button class="btn btn-primary" onclick="doAdminLogin()">Ingia</button>
+      <div class="alert alert-info" style="margin-top:12px;">Mfumo huu unaingia kwa <strong>credentials binafsi za kila kiongozi</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="screen" id="screen-admin">
+  <div class="topbar" style="background:var(--primary-dark);">
+    <div>
+      <p class="topbar-title">NYAFAG</p>
+      <p class="topbar-sub">Dashibodi ya Kiongozi — <span id="leader-role-display">—</span> / <span id="leader-name-display">—</span></p>
+    </div>
+    <div class="topbar-right">
+      <button class="logout-btn" onclick="doAdminLogout()">Toka</button>
+    </div>
+  </div>
+  <div class="admin-wrap">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">🛡 Role ya Akaunti Hii</div>
+      <div id="role-banner"></div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" id="atab-muhtasari-btn" onclick="showAdminTab('muhtasari')">📊 Muhtasari</div>
+      <div class="tab" id="atab-wanachama-btn" onclick="showAdminTab('wanachama')">👥 Wanachama</div>
+      <div class="tab" id="atab-matangazo-btn" onclick="showAdminTab('matangazo')">📢 Matangazo</div>
+      <div class="tab" id="atab-rambirambi-btn" onclick="showAdminTab('rambirambi')">📋 Rambirambi</div>
+      <div class="tab" id="atab-malipo-btn" onclick="showAdminTab('malipo')">💳 Malipo</div>
+      <div class="tab" id="atab-michango-btn" onclick="showAdminTab('michango')">📑 Financial Report</div>
+    </div>
+    <!-- MUHTASARI -->
+    <div id="atab-muhtasari">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num" id="a-total-wanachama">0</div><div class="stat-lbl">Wanachama</div></div>
+        <div class="stat-card"><div class="stat-num" id="a-rambirambi-pending">0</div><div class="stat-lbl">Rambirambi Pending</div></div>
+        <div class="stat-card"><div class="stat-num" id="a-faini-count">0</div><div class="stat-lbl">Wanaohitaji Faini</div></div>
+        <div class="stat-card"><div class="stat-num" id="a-total-pool">0</div><div class="stat-lbl">Jumla Akaunti (000)</div></div>
+        <div class="stat-card"><div class="stat-num" id="a-tangazo-count">0</div><div class="stat-lbl">Matangazo</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚠ Wanaohitaji Ufuatiliaji</div>
+        <div id="penalty-list"></div>
+      </div>
+    </div>
+    <!-- WANACHAMA -->
+    <div id="atab-wanachama" style="display:none;">
+      <div class="card">
+        <div class="card-title">👥 Wanachama</div>
+        <div id="wanachama-list"></div>
+      </div>
+    </div>
+    <!-- MATANGAZO -->
+    <div id="atab-matangazo" style="display:none;">
+      <div class="card" id="compose-announce-card">
+        <div class="card-title" style="color:var(--announce);">📢 Tuma Tangazo Jipya</div>
+        <div id="announce-compose-alert"></div>
+        <div class="form-group"><label>Kichwa cha Tangazo</label><input type="text" class="form-input" id="ann-title" placeholder="mfano: Mkutano wa Muhimu"/></div>
+        <div class="form-group"><label>Ujumbe wa Tangazo</label><textarea class="form-input" id="ann-body" rows="4" placeholder="Andika ujumbe wako hapa..."></textarea></div>
+        <div class="form-group"><label>Kipaumbele</label>
+          <select class="form-select" id="ann-priority">
+            <option value="normal">🔵 Kawaida</option>
+            <option value="urgent">🔴 Haraka</option>
+            <option value="info">ℹ️ Taarifa</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tuma kwa</label>
+          <select class="form-select" id="ann-audience-type" onchange="toggleAudiencePanel()">
+            <option value="all">👥 Wanachama Wote</option>
+            <option value="selected">✅ Wanachama Wachaguliwa</option>
+          </select>
+        </div>
+        <div id="ann-audience-panel" style="display:none;margin-bottom:14px;">
+          <label style="font-size:13px;font-weight:700;display:block;margin-bottom:8px;">Chagua Wanachama:</label>
+          <div class="audience-grid" id="audience-checkboxes"></div>
+          <div style="margin-top:8px;font-size:12px;color:var(--muted);" id="audience-selected-count">0 wamechaguliwa</div>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="ann-send-wa" checked style="accent-color:var(--announce);width:16px;height:16px;"/>
+            <span>📱 Tuma pia kupitia WhatsApp kwa kila mwanachama</span>
+          </label>
+        </div>
+        <button class="btn btn-purple" onclick="tutaTangazo()">📤 Tuma Tangazo</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 Historia ya Matangazo</div>
+        <div id="admin-announcements-list"></div>
+      </div>
+    </div>
+    <!-- RAMBIRAMBI -->
+    <div id="atab-rambirambi" style="display:none;">
+      <div class="card">
+        <div class="card-title">📋 Maombi ya Rambirambi</div>
+        <div id="madai-admin-list"></div>
+      </div>
+    </div>
+    <!-- MALIPO -->
+    <div id="atab-malipo" style="display:none;">
+      <div class="card">
+        <div class="card-title">💳 Ongeza / Huisha Malipo</div>
+        <div id="malipo-alert"></div>
+        <div class="form-group"><label>Chagua Mwanachama</label><select class="form-select" id="malipo-mwanachama"><option value="">Chagua mwanachama...</option></select></div>
+        <div class="form-group"><label>Kiasi (TZS)</label><input type="number" class="form-input" id="malipo-kiasi" placeholder="30000"/></div>
+        <div class="form-group"><label>Tarehe</label><input type="date" class="form-input" id="malipo-tarehe"/></div>
+        <div class="form-group"><label>Maelezo (hiari)</label><input type="text" class="form-input" id="malipo-maelezo" placeholder="mfano: Mchango wa Januari"/></div>
+        <button class="btn btn-gold" onclick="ongezaMalipo()">💾 Hifadhi Malipo</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📜 Historia ya Malipo</div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Tarehe</th><th>Mwanachama</th><th>Kiasi</th><th>Maelezo</th></tr></thead><tbody id="malipo-history"></tbody></table>
+        </div>
+      </div>
+    </div>
+    <!-- FINANCIAL REPORT -->
+    <div id="atab-michango" style="display:none;">
+      <div id="michango-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span id="modal-title-txt">—</span>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// CONFIG — Nyangw'ale Family Group (NYAFAG) v3
+// ═══════════════════════════════════════════
+const WA_MWENYEKITI  = '255757213022';
+const WA_KATIBU      = '255714253022';
+const WA_MWEKAHAZINA = '255754847084';
+
+const MIN_SALIO = 30000;
+const MCHANGO   = 30000;
+const FAINI     = 15000;
+const MSAADA    = 10000000; // Rambirambi ya NYAFAG: TZS 10,000,000
+
+const STORAGE = {
+  MEMBERS       : 'nyafag_v1_wanachama',
+  DEPENDANTS    : 'nyafag_v1_tegemezi',
+  CLAIMS        : 'nyafag_v1_rambirambi',
+  PAYMENTS      : 'nyafag_v1_malipo',
+  ANNOUNCEMENTS : 'nyafag_v1_matangazo',
+  ACTIONS       : 'nyafag_v1_actions',
+  LEADERS       : 'nyafag_v1_leaders',
+  READ_RECEIPTS : 'nyafag_v1_read_receipts'
+};
+
+// ═══════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════
+let currentUser   = null;
+let currentLeader = null;
+let watotoCount   = 0;
+let editWatotoCount = 0;
+
+let allWanachama = [], allTegemezi = [], allRambirambi = [];
+let allMalipo = [], allTangazo = [], allPendingActions = [];
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+const $ = id => document.getElementById(id);
+function pesa(n){ return `TZS ${Number(n||0).toLocaleString('en-TZ')}`; }
+function leoISO(){ return new Date().toISOString().slice(0,10); }
+function sasaISO(){ return new Date().toISOString(); }
+function uid(){ return crypto.randomUUID(); }
+
+function toast(msg='Imefanikiwa'){
+  const t=$('toast'); if(!t)return;
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+function setAlert(id,msg='',type='info'){
+  const el=$(id); if(!el)return;
+  el.innerHTML = msg ? `<div class="alert alert-${type}">${msg}</div>` : '';
+}
+function safuTupu(msg='Hakuna taarifa'){
+  return `<div class="card"><p style="text-align:center;color:var(--muted);padding:10px;">${msg}</p></div>`;
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const t=$(id); if(t)t.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openModal(title,html){
+  if($('modal-title-txt'))$('modal-title-txt').textContent=title||'Taarifa';
+  if($('modal-body'))$('modal-body').innerHTML=html||'';
+  $('modal-bg')?.classList.add('open');
+}
+function closeModal(e){ if(e.target.id==='modal-bg')$('modal-bg')?.classList.remove('open'); }
+function closeModalDirect(){ $('modal-bg')?.classList.remove('open'); }
+function normalizePhone(phone=''){
+  let p=String(phone).trim().replace(/\s+/g,'');
+  if(p.startsWith('+'))p=p.slice(1);
+  if(p.startsWith('0'))p='255'+p.slice(1);
+  return p;
+}
+function badgeStatus(st=''){
+  const map={pending:'badge-pending',approved:'badge-approved',rejected:'badge-rejected',active:'badge-active',inactive:'badge-inactive',reviewed_by_treasurer:'badge-pending'};
+  return map[st]||'badge-pending';
+}
+function roleName(role=''){
+  if(role==='secretary')return'Katibu';
+  if(role==='treasurer')return'Mweka Hazina';
+  if(role==='chairperson')return'Mwenyekiti';
+  return role||'Kiongozi';
+}
+function can(roleKey){ return !!(currentLeader && currentLeader.role===roleKey); }
+function canAny(...roles){ return !!(currentLeader && roles.includes(currentLeader.role)); }
+function memberInitials(name='M'){ return (name||'M').trim().charAt(0).toUpperCase(); }
+function escapeHtml(str=''){
+  return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
+}
+function priorityIcon(p='normal'){
+  if(p==='urgent') return '🔴';
+  if(p==='info')   return 'ℹ️';
+  return '🔵';
+}
+function priorityLabel(p='normal'){
+  if(p==='urgent') return 'Haraka';
+  if(p==='info')   return 'Taarifa';
+  return 'Kawaida';
+}
+
+// ═══════════════════════════════════════════
+// WHATSAPP HELPERS
+// ═══════════════════════════════════════════
+function openWhatsApp(number,message){
+  const phone=normalizePhone(number||'');
+  if(!phone){ console.warn('WhatsApp number missing'); return; }
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message||'')}`, '_blank');
+}
+function getLeaderByRole(role){
+  return DB.get(STORAGE.LEADERS).find(l=>l.role===role && l.active!==false)||null;
+}
+function sendRoleWhatsApp(role,message){
+  const leader=getLeaderByRole(role);
+  if(!leader||!leader.wa){ console.warn(`No WA number for role: ${role}`); return; }
+  openWhatsApp(leader.wa,message);
+}
+function sendMemberWhatsApp(memberPhone,message){
+  if(!memberPhone) return;
+  openWhatsApp(memberPhone,message);
+}
+function notifyKatibuRegistration(member){
+  const msg=`*NYAFAG - USAJILI MPYA*\n\nKatibu, kuna ombi jipya la usajili.\n\n*Jina:* ${member.jina_kamili}\n*Simu:* ${member.namba_simu}\n*Tarehe:* ${new Date().toLocaleString('en-GB')}\n\nTafadhali ingia kwenye mfumo uhakiki usajili huu.`.trim();
+  sendRoleWhatsApp('secretary',msg);
+}
+function notifyMwekaHazinaClaim(member,claim){
+  const msg=`*NYAFAG - OMBI JIPYA LA RAMBIRAMBI*\n\nMweka Hazina, kuna ombi jipya la rambirambi.\n\n*Mwanachama:* ${member.jina_kamili}\n*Simu:* ${member.namba_simu}\n*Uhusiano:* ${claim.uhusiano}\n*Marehemu:* ${claim.jina_marehemu}\n*Tarehe ya Kifo:* ${claim.tarehe_kifo||'—'}\n*Kiasi:* ${pesa(claim.amount||0)}\n\nTafadhali ingia kwenye mfumo kulihakiki.`.trim();
+  sendRoleWhatsApp('treasurer',msg);
+}
+function notifyMwenyekitiFinalApproval(member,claim){
+  const msg=`*NYAFAG - IDHINI YA MWISHO INAHITAJIKA*\n\nMwenyekiti, ombi la rambirambi limehakikiwa na Mweka Hazina na linasubiri idhini yako ya mwisho.\n\n*Mwanachama:* ${member.jina_kamili}\n*Simu:* ${member.namba_simu}\n*Uhusiano:* ${claim.uhusiano}\n*Marehemu:* ${claim.jina_marehemu}\n*Kiasi:* ${pesa(claim.amount||0)}\n\nTafadhali ingia kwenye mfumo kutoa maamuzi ya mwisho.`.trim();
+  sendRoleWhatsApp('chairperson',msg);
+}
+function notifyMemberApproval(member,claim){
+  const msg=`*NYAFAG*\n\nHabari ${member.jina_kamili},\n\nOmbi lako la rambirambi ya msiba *limeidhinishwa*.\n\n*Uhusiano:* ${claim.uhusiano}\n*Marehemu:* ${claim.jina_marehemu}\n*Kiasi:* ${pesa(claim.amount||0)}\n\nTafadhali fuatilia viongozi kwa hatua zinazofuata.`.trim();
+  sendMemberWhatsApp(member.namba_simu,msg);
+}
+function notifyMemberRejection(member,claim,reason){
+  const msg=`*NYAFAG*\n\nHabari ${member.jina_kamili},\n\nOmbi lako la rambirambi ya msiba *halijaidhinishwa*.\n\n*Uhusiano:* ${claim.uhusiano}\n*Marehemu:* ${claim.jina_marehemu}\n*Sababu:* ${reason}\n\nKwa maelezo zaidi tafadhali wasiliana na viongozi.`.trim();
+  sendMemberWhatsApp(member.namba_simu,msg);
+}
+function notifyMemberPayment(member,kiasi){
+  const msg=`*NYAFAG*\n\nHabari ${member.jina_kamili},\n\nMalipo yako ya *${pesa(kiasi)}* yamepokelewa na kuhifadhiwa kwenye mfumo.\n\nAsante kwa ushirikiano wako.`.trim();
+  sendMemberWhatsApp(member.namba_simu,msg);
+}
+
+// ═══════════════════════════════════════════
+// LOCAL DB (localStorage)
+// ═══════════════════════════════════════════
+const DB = {
+  get(table){ try{ return JSON.parse(localStorage.getItem(table)||'[]'); }catch(e){ return []; } },
+  set(table,data){ localStorage.setItem(table,JSON.stringify(data)); },
+  post(table,data){
+    const arr=this.get(table);
+    const row={id:uid(),created_at:sasaISO(),...data};
+    arr.push(row); this.set(table,arr); return row;
+  },
+  patch(table,id,payload){
+    const arr=this.get(table);
+    this.set(table,arr.map(x=>x.id===id?{...x,...payload,updated_at:sasaISO()}:x));
+    return true;
+  },
+  delete(table,id){
+    this.set(table,this.get(table).filter(x=>x.id!==id)); return true;
+  }
+};
+
+// ═══════════════════════════════════════════
+// READ RECEIPTS
+// ═══════════════════════════════════════════
+function markRead(memberId,announceId){
+  const key=`${memberId}__${announceId}`;
+  const rr=DB.get(STORAGE.READ_RECEIPTS);
+  if(!rr.includes(key)){ rr.push(key); DB.set(STORAGE.READ_RECEIPTS,rr); }
+}
+function hasRead(memberId,announceId){
+  return DB.get(STORAGE.READ_RECEIPTS).includes(`${memberId}__${announceId}`);
+}
+function countUnread(memberId,announcements){
+  return announcements.filter(a=>!hasRead(memberId,a.id)).length;
+}
+
+// ═══════════════════════════════════════════
+// SEED LEADERS (default accounts)
+// ═══════════════════════════════════════════
+(function seedLeaders(){
+  const leaders=DB.get(STORAGE.LEADERS);
+  if(!leaders.length){
+    DB.set(STORAGE.LEADERS,[
+      {id:uid(),user:'mwenyekiti',pass:'123456',role:'chairperson',cheo:'Mwenyekiti',wa:WA_MWENYEKITI,active:true,created_at:sasaISO()},
+      {id:uid(),user:'katibu',    pass:'123456',role:'secretary',  cheo:'Katibu',    wa:WA_KATIBU,    active:true,created_at:sasaISO()},
+      {id:uid(),user:'mwekahazina',pass:'123456',role:'treasurer',cheo:'Mweka Hazina',wa:WA_MWEKAHAZINA,active:true,created_at:sasaISO()}
+    ]);
+  }else{
+    DB.set(STORAGE.LEADERS,leaders.map(l=>{
+      if(l.role==='chairperson') return {...l,wa:WA_MWENYEKITI};
+      if(l.role==='secretary')   return {...l,wa:WA_KATIBU};
+      if(l.role==='treasurer')   return {...l,wa:WA_MWEKAHAZINA};
+      return l;
+    }));
+  }
+})();
+
+// ═══════════════════════════════════════════
+// REGISTER / LOGIN
+// ═══════════════════════════════════════════
+function doRegister(){
+  const jina=$('reg-jina')?.value.trim();
+  const simu=$('reg-simu')?.value.trim();
+  const pin=$('reg-pin')?.value.trim();
+  const pin2=$('reg-pin2')?.value.trim();
+  if(!jina||!simu||!pin||!pin2){ setAlert('reg-alert','Jaza taarifa zote muhimu.','error'); return; }
+  if(jina.split(' ').length<3){ setAlert('reg-alert','Tafadhali andika angalau majina matatu.','error'); return; }
+  if(pin!==pin2){ setAlert('reg-alert','PIN hazilingani.','error'); return; }
+  if(pin.length!==4||isNaN(pin)){ setAlert('reg-alert','PIN lazima iwe nambari 4.','error'); return; }
+  const phone=normalizePhone(simu);
+  if(DB.get(STORAGE.MEMBERS).some(m=>normalizePhone(m.namba_simu)===phone)){
+    setAlert('reg-alert','Namba hii tayari imesajiliwa.','error'); return;
+  }
+  const member=DB.post(STORAGE.MEMBERS,{jina_kamili:jina,namba_simu:phone,pin,salio:0,status:'pending',jumla_michango:0,total_fines:0,last_payment_date:null});
+  collectRegistrationTegemezi(member.id).forEach(t=>DB.post(STORAGE.DEPENDANTS,t));
+  notifyKatibuRegistration(member);
+  setAlert('reg-alert','✅ Ombi lako limetumwa kwa mafanikio. Subiri idhini ya Katibu / Mwenyekiti.','success');
+  toast('Usajili umefanikiwa');
+  clearRegisterForm();
+  setTimeout(()=>showScreen('screen-login'),1200);
+}
+function clearRegisterForm(){
+  ['reg-jina','reg-simu','reg-pin','reg-pin2','teg-baba','teg-mama','teg-baba-mkwe','teg-mama-mkwe','teg-mwenzi'].forEach(id=>{if($(id))$(id).value='';});
+  const c=$('watoto-container'); if(c)c.innerHTML='';
+  watotoCount=0;
+}
+function collectRegistrationTegemezi(memberId){
+  const map=[['Baba','teg-baba'],['Mama','teg-mama'],['Baba Mkwe','teg-baba-mkwe'],['Mama Mkwe','teg-mama-mkwe'],['Mwenzi','teg-mwenzi']];
+  const data=[];
+  map.forEach(([uhusiano,id])=>{ const v=$(id)?.value.trim(); if(v) data.push({mwanachama_id:memberId,uhusiano,jina_kamili:v}); });
+  document.querySelectorAll('#watoto-container input[id^="teg-mtoto"]').forEach((el,i)=>{ const v=el.value.trim(); if(v) data.push({mwanachama_id:memberId,uhusiano:`Mtoto ${i+1}`,jina_kamili:v}); });
+  return data;
+}
+function doLogin(){
+  const simu=$('login-simu')?.value.trim();
+  const pin=$('login-pin')?.value.trim();
+  if(!simu||!pin){ setAlert('login-alert','Weka namba ya simu na PIN.','error'); return; }
+  const phone=normalizePhone(simu);
+  const user=DB.get(STORAGE.MEMBERS).find(m=>normalizePhone(m.namba_simu)===phone&&m.pin===pin);
+  if(!user){ setAlert('login-alert','Taarifa za kuingia si sahihi.','error'); return; }
+  if(user.status!=='approved'){ setAlert('login-alert','Akaunti yako bado haijaidhinishwa.','warning'); return; }
+  currentUser=user;
+  loadMemberDashboard();
+  showScreen('screen-member');
+}
+function doLogout(){ currentUser=null; showScreen('screen-welcome'); toast('Umetoka salama'); }
+
+// ═══════════════════════════════════════════
+// MEMBER DASHBOARD
+// ═══════════════════════════════════════════
+function loadMemberDashboard(){
+  if(!currentUser) return;
+  const fresh=DB.get(STORAGE.MEMBERS).find(m=>m.id===currentUser.id);
+  if(fresh) currentUser=fresh;
+
+  const teg=DB.get(STORAGE.DEPENDANTS);
+  const tangazo=DB.get(STORAGE.ANNOUNCEMENTS);
+
+  const myTeg=teg.filter(t=>t.mwanachama_id===currentUser.id);
+  // FIX #1 & #17: use allRambirambi / myRambirambi consistently
+  const myRambirambi=DB.get(STORAGE.CLAIMS).filter(d=>d.mwanachama_id===currentUser.id);
+  const myTangazo=tangazo.filter(a=>a.target==='all'||a.recipient_ids?.includes(currentUser.id));
+  const unread=countUnread(currentUser.id,myTangazo);
+
+  $('mem-topbar-name').textContent=currentUser.jina_kamili;
+  $('mem-jina').textContent=currentUser.jina_kamili;
+  $('mem-simu').textContent=currentUser.namba_simu;
+  $('mem-salio').textContent=pesa(currentUser.salio||0);
+  // FIX #18: correct element id mem-rambirambi-count
+  $('mem-rambirambi-count').textContent=myRambirambi.length;
+  $('mem-teg-count').textContent=myTeg.length;
+  $('mem-unread-badge').textContent=unread;
+
+  if(currentUser.salio<MIN_SALIO){
+    $('mem-penalty-banner').style.display='block';
+    $('mem-penalty-text').textContent=`Salio lako ni ${pesa(currentUser.salio)}. Tafadhali weka angalau ${pesa(MIN_SALIO)} ili kuepuka changamoto za mchango/faini.`;
+  }else{
+    $('mem-penalty-banner').style.display='none';
+  }
+
+  renderTegemeziList(myTeg);
+  renderTegemeziEditForm(myTeg);
+  renderRambirambiDropdown(myTeg);
+  // FIX #8: call correct renamed function
+  renderHistoriaRambirambi(myRambirambi);
+  renderMemberInboxLatest(myTangazo);
+  renderMemberAnnouncementsFull(myTangazo);
+  // FIX #2: call correct function name
+  renderMemberRambirambiStatus(myRambirambi);
+}
+
+// FIX #2: correct function name (was renderMemberMsaadaStatus in old file)
+function renderMemberRambirambiStatus(myRambirambi=[]){
+  const home=$('mtab-nyumbani');
+  if(!home) return;
+  const old=document.getElementById('member-rambirambi-holder');
+  if(old) old.remove();
+  const approvedClaims=myRambirambi.filter(d=>d.status==='approved');
+  const box=document.createElement('div');
+  box.id='member-rambirambi-holder';
+  box.innerHTML=`
+    <div class="card">
+      <div class="card-title">💰 Rambirambi Uliyopokea</div>
+      ${approvedClaims.length
+        ? approvedClaims.slice().reverse().map(d=>`
+          <div class="inbox-announce" style="border-left:4px solid #16a34a;">
+            <div class="inbox-announce-title">✅ Rambirambi Imeidhinishwa</div>
+            <div class="inbox-announce-body">Umeidhinishiwa rambirambi ya <strong>${pesa(d.amount||MSAADA)}</strong> kwa <strong>${escapeHtml(d.uhusiano||'Tegemezi')}</strong>.</div>
+            <div class="inbox-announce-meta">Marehemu: ${escapeHtml(d.jina_marehemu||'—')} · Tarehe ya Kifo: ${d.tarehe_kifo||'—'} · Tarehe ya Idhini: ${d.chairperson_approved_at ? new Date(d.chairperson_approved_at).toLocaleString('en-GB') : '—'}</div>
+          </div>`).join('')
+        : `<p style="font-size:13px;color:var(--muted);">Bado hujapokea rambirambi yoyote iliyoidhinishwa.</p>`}
+    </div>`;
+  home.appendChild(box);
+}
+
+// FIX #3 & #4 & #5: correct tab names, no duplicate ids
+function showMemberTab(tab){
+  ['nyumbani','matangazo','tegemezi','dai','historia'].forEach(t=>{
+    const page=$(`mtab-${t}`);
+    const btn=$(`mtab-${t}-btn`);
+    if(page) page.style.display=t===tab?'block':'none';
+    if(btn)  btn.classList.toggle('active',t===tab);
+  });
+  if(tab==='matangazo'&&currentUser){
+    const tangazo=DB.get(STORAGE.ANNOUNCEMENTS).filter(a=>a.target==='all'||a.recipient_ids?.includes(currentUser.id));
+    tangazo.forEach(a=>markRead(currentUser.id,a.id));
+    setTimeout(()=>{ $('mem-unread-badge').textContent='0'; },100);
+  }
+}
+
+function renderMemberInboxLatest(list=[]){
+  const latest=list.slice().reverse().slice(0,3);
+  const box=document.createElement('div');
+  box.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div class="card-title" style="margin-bottom:0;">📢 Matangazo ya Hivi Karibuni</div>
+        ${list.length>0?`<button class="btn btn-sm" style="background:var(--announce-light);color:var(--announce);border:1px solid #d8b4fe;" onclick="showMemberTab('matangazo')">Tazama Yote →</button>`:''}
+      </div>
+      ${latest.length ? latest.map(a=>renderInboxCard(a)).join('') : `<p style="font-size:13px;color:var(--muted);">Hakuna tangazo jipya kwa sasa.</p>`}
+    </div>`;
+  const home=$('mtab-nyumbani');
+  const old=document.getElementById('member-inbox-holder');
+  if(old) old.remove();
+  box.id='member-inbox-holder';
+  home.appendChild(box);
+}
+function renderInboxCard(a){
+  const isUnread=currentUser&&!hasRead(currentUser.id,a.id);
+  return `
+    <div class="inbox-announce">
+      <div class="inbox-announce-title">${priorityIcon(a.priority)} ${escapeHtml(a.title||'Tangazo')}${isUnread?'<span class="inbox-announce-unread">MPYA</span>':''}</div>
+      <div class="inbox-announce-body">${escapeHtml(a.body||'').replace(/\n/g,'<br>')}</div>
+      <div class="inbox-announce-meta">Tarehe: ${new Date(a.created_at).toLocaleString('en-GB')} · Na: ${escapeHtml(a.sent_by_name||'Katibu')} · <span class="badge badge-announce" style="font-size:10px;padding:3px 8px;">${priorityLabel(a.priority)}</span></div>
+    </div>`;
+}
+function renderMemberAnnouncementsFull(list=[]){
+  const el=$('member-announcements-full'); if(!el) return;
+  if(!list.length){ el.innerHTML=`<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Hakuna matangazo bado.</p>`; return; }
+  el.innerHTML=list.slice().reverse().map(a=>renderInboxCard(a)).join('');
+}
+function renderTegemeziList(list=[]){
+  $('teg-list-display').innerHTML=!list.length?safuTupu('Hakuna tegemezi waliosajiliwa bado.'):
+    `<div class="tegemezi-grid">${list.map(t=>`<div class="teg-item filled"><div class="teg-role">${escapeHtml(t.uhusiano)}</div><div class="teg-name">${escapeHtml(t.jina_kamili)}</div></div>`).join('')}</div>`;
+}
+function renderTegemeziEditForm(list=[]){
+  const fixedRoles=['Baba','Mama','Baba Mkwe','Mama Mkwe','Mwenzi'];
+  const existingMap={};
+  list.forEach(t=>existingMap[t.uhusiano]=t.jina_kamili);
+  const watoto=list.filter(t=>/^Mtoto\s+\d+$/i.test(t.uhusiano)).sort((a,b)=>(Number(a.uhusiano.replace(/\D/g,''))||0)-(Number(b.uhusiano.replace(/\D/g,''))||0));
+  editWatotoCount=watoto.length;
+  $('teg-add-form').innerHTML=`
+    ${fixedRoles.map(role=>`<div class="form-group"><label>${role}</label><input type="text" class="form-input" id="edit-teg-${role.replace(/\s+/g,'-').toLowerCase()}" value="${escapeHtml(existingMap[role]||'')}" placeholder="Andika jina kamili"/></div>`).join('')}
+    <div id="edit-watoto-container">${watoto.map((c,i)=>`<div class="form-group"><label>Mtoto ${i+1}</label><input type="text" class="form-input edit-mtoto-input" value="${escapeHtml(c.jina_kamili||'')}"/></div>`).join('')}</div>`;
+}
+function ongezaMtotoEditField(){
+  editWatotoCount++;
+  const c=$('edit-watoto-container'); if(!c) return;
+  const wrap=document.createElement('div'); wrap.className='form-group';
+  wrap.innerHTML=`<label>Mtoto ${editWatotoCount}</label><input type="text" class="form-input edit-mtoto-input" placeholder="Andika jina kamili"/>`;
+  c.appendChild(wrap); toast(`Mtoto ${editWatotoCount} ameongezwa`);
+}
+function hifadhiTegemezi(){
+  if(!currentUser) return;
+  const old=DB.get(STORAGE.DEPENDANTS).filter(t=>t.mwanachama_id!==currentUser.id);
+  const mpya=[];
+  const fixedRoles=['Baba','Mama','Baba Mkwe','Mama Mkwe','Mwenzi'];
+  fixedRoles.forEach(role=>{ const v=$(`edit-teg-${role.replace(/\s+/g,'-').toLowerCase()}`)?.value.trim(); if(v) mpya.push({id:uid(),created_at:sasaISO(),mwanachama_id:currentUser.id,uhusiano:role,jina_kamili:v}); });
+  document.querySelectorAll('.edit-mtoto-input').forEach((el,i)=>{ const v=el.value.trim(); if(v) mpya.push({id:uid(),created_at:sasaISO(),mwanachama_id:currentUser.id,uhusiano:`Mtoto ${i+1}`,jina_kamili:v}); });
+  DB.set(STORAGE.DEPENDANTS,[...old,...mpya]);
+  setAlert('teg-add-alert','✅ Tegemezi zimehifadhiwa kwa mafanikio.','success');
+  toast('Tegemezi zimehifadhiwa');
+  loadMemberDashboard();
+}
+
+// FIX #6: correct element id 'rambirambi-tegemezi' (lowercase)
+function renderRambirambiDropdown(list=[]){
+  const sel=$('rambirambi-tegemezi'); if(!sel) return;
+  sel.innerHTML=`<option value="">Chagua tegemezi...</option>`;
+  list.forEach(t=>{ const o=document.createElement('option'); o.value=`${t.uhusiano}|${t.jina_kamili}`; o.textContent=`${t.uhusiano} — ${t.jina_kamili}`; sel.appendChild(o); });
+}
+
+// FIX #8: correct function name
+function renderHistoriaRambirambi(list=[]){
+  const el=$('historia-rambirambi-list'); if(!el) return;
+  el.innerHTML=!list.length?safuTupu('Bado hujafanya ombi la rambirambi lolote.'):
+    list.map(d=>`
+      <div class="dai-card">
+        <div class="dai-card-header">
+          <div>
+            <div class="dai-title">${escapeHtml(d.uhusiano)}</div>
+            <div class="dai-sub">Marehemu: ${escapeHtml(d.jina_marehemu)}</div>
+            <div class="dai-sub">Tarehe ya kifo: ${d.tarehe_kifo||'—'}</div>
+            ${d.status==='approved'?`<div class="dai-sub" style="color:#16a34a;font-weight:700;">💰 Rambirambi iliyopokelewa: ${pesa(d.amount||MSAADA)} · ${d.chairperson_approved_at?new Date(d.chairperson_approved_at).toLocaleDateString('en-GB'):'—'}</div>`:''}
+          </div>
+          <span class="badge ${badgeStatus(d.status)}">${escapeHtml(d.status)}</span>
+        </div>
+        ${d.reject_reason?`<div class="alert alert-error" style="margin-top:10px;">Sababu ya kukataliwa: ${escapeHtml(d.reject_reason)}</div>`:''}
+      </div>`).join('');
+}
+
+function thibitishaDai(){
+  if(!currentUser){ toast('Tafadhali ingia kwanza'); return; }
+  // FIX #6: correct element id
+  const teg=$('rambirambi-tegemezi')?.value;
+  const jina=$('rambirambi-jina-marehemu')?.value.trim();
+  const tarehe=$('rambirambi-tarehe')?.value;
+  const maelezo=$('rambirambi-maelezo')?.value.trim();
+  // FIX #9: use 'dai-alert' which is the correct id in HTML
+  if(!teg||!jina){ setAlert('dai-alert','Chagua tegemezi na weka jina la marehemu.','error'); return; }
+  const [uhusiano,jinaTegemezi]=teg.split('|');
+  const existingClaims=DB.get(STORAGE.CLAIMS).filter(d=>
+    d.mwanachama_id===currentUser.id&&d.uhusiano===uhusiano&&
+    (d.status==='pending'||d.status==='reviewed_by_treasurer'||d.status==='approved')
+  );
+  if(existingClaims.length){
+    setAlert('dai-alert',`Tegemezi huyu (${uhusiano} — ${jinaTegemezi}) tayari ana ombi la rambirambi. Mfumo haukubali kuomba rambirambi zaidi ya mara moja kwa tegemezi huyu.`,'error');
+    return;
+  }
+  const claim=DB.post(STORAGE.CLAIMS,{mwanachama_id:currentUser.id,uhusiano,jina_tegemezi:jinaTegemezi,jina_marehemu:jina,tarehe_kifo:tarehe,maelezo,status:'pending',approved_by_treasurer:false,approved_by_chairperson:false,amount:MSAADA,msaada_paid:false,msaada_paid_at:null});
+  notifyMwekaHazinaClaim(currentUser,claim);
+  setAlert('dai-alert','✅ Ombi la rambirambi limetumwa kwa mafanikio. Linasubiri uhakiki wa Mweka Hazina na idhini ya Mwenyekiti.','success');
+  toast('Ombi la rambirambi limetumwa');
+  $('rambirambi-jina-marehemu').value=''; $('rambirambi-maelezo').value=''; $('rambirambi-tegemezi').value=''; $('rambirambi-tarehe').value=leoISO();
+  loadMemberDashboard();
+  // FIX #3: use correct tab name 'historia'
+  showMemberTab('historia');
+}
+
+// ═══════════════════════════════════════════
+// ADMIN LOGIN
+// ═══════════════════════════════════════════
+function doAdminLogin(){
+  const user=$('admin-user')?.value.trim();
+  const pass=$('admin-pw')?.value.trim();
+  if(!user||!pass){ setAlert('admin-login-alert','Weka jina la mtumiaji na nenosiri.','error'); return; }
+  const found=DB.get(STORAGE.LEADERS).find(l=>l.user===user&&l.pass===pass&&l.active!==false);
+  if(!found){ setAlert('admin-login-alert','Jina la mtumiaji au nenosiri si sahihi.','error'); return; }
+  currentLeader=found;
+  $('leader-role-display').textContent=found.cheo;
+  $('leader-name-display').textContent=found.user;
+  showScreen('screen-admin');
+  renderLeaderDashboard();
+}
+function doAdminLogout(){ currentLeader=null; showScreen('screen-welcome'); }
+
+function renderLeaderDashboard(){
+  allWanachama=DB.get(STORAGE.MEMBERS);
+  allTegemezi=DB.get(STORAGE.DEPENDANTS);
+  allRambirambi=DB.get(STORAGE.CLAIMS);
+  allMalipo=DB.get(STORAGE.PAYMENTS);
+  allTangazo=DB.get(STORAGE.ANNOUNCEMENTS);
+  allPendingActions=DB.get(STORAGE.ACTIONS);
+
+  renderAdminSummary();
+  renderWanachamaList();
+  renderRambirambiAdmin();
+  renderMalipoHistory();
+  renderMichangoList();
+  renderPenaltyList();
+  renderAdminRoleUI();
+  renderAdminAnnouncements();
+  populateMalipoMembers();
+}
+
+// FIX #10: lowercase tab names consistent with HTML ids
+function showAdminTab(tab){
+  ['muhtasari','wanachama','matangazo','rambirambi','michango','malipo'].forEach(t=>{
+    const page=$(`atab-${t}`);
+    const btn=$(`atab-${t}-btn`);
+    if(page) page.style.display=t===tab?'block':'none';
+    if(btn)  btn.classList.toggle('active',t===tab);
+  });
+}
+
+// ═══════════════════════════════════════════
+// ROLE-BASED UI
+// ═══════════════════════════════════════════
+function renderAdminRoleUI(){
+  if(!currentLeader) return;
+  const role=currentLeader.role;
+  $('atab-malipo-btn').style.display   =role==='treasurer'?'block':'none';
+  $('atab-michango-btn').style.display =role==='treasurer'?'block':'none';
+  $('atab-matangazo-btn').style.display=role==='secretary'?'block':'none';
+  const old=document.getElementById('role-notice'); if(old) old.remove();
+  const notice=document.createElement('div');
+  notice.id='role-notice';
+  notice.innerHTML=`
+    <div class="alert alert-announce">
+      Umeingia kama <strong>${roleName(role)}</strong>.
+      ${role==='secretary'?'Unaweza kusimamia wanachama, kutuma matangazo, na kuwasiliana na wanachama.':role==='treasurer'?'Unaweza kuhifadhi malipo, kusimamia faini, na kudownload financial report.':'Unaweza kutoa idhini ya mwisho ya rambirambi na approvals muhimu pekee.'}
+    </div>`;
+  $('atab-muhtasari').prepend(notice);
+  const composeCard=$('compose-announce-card');
+  if(composeCard) composeCard.style.display=role==='secretary'?'block':'none';
+}
+
+// ═══════════════════════════════════════════
+// ADMIN SUMMARY
+// ═══════════════════════════════════════════
+function renderAdminSummary(){
+  const approved=allWanachama.filter(x=>x.status==='approved');
+  $('a-total-wanachama').textContent=approved.length;
+  $('a-rambirambi-pending').textContent=allRambirambi.filter(x=>x.status==='pending').length;
+  $('a-faini-count').textContent=approved.filter(x=>Number(x.salio||0)<MIN_SALIO).length;
+  $('a-total-pool').textContent=(approved.reduce((a,b)=>a+(Number(b.salio)||0),0)/1000).toLocaleString();
+  $('a-tangazo-count').textContent=allTangazo.length;
+}
+
+// ═══════════════════════════════════════════
+// PENALTY LIST
+// ═══════════════════════════════════════════
+function renderPenaltyList(){
+  const approved=allWanachama.filter(x=>x.status==='approved'&&Number(x.salio||0)<MIN_SALIO);
+  const el=$('penalty-list'); if(!el) return;
+  if(!approved.length){ el.innerHTML=`<p style="color:var(--muted);text-align:center;padding:20px;font-size:13px;">Hakuna mwanachama anayehitaji faini kwa sasa</p>`; return; }
+  el.innerHTML=approved.map(m=>`
+    <div class="member-row">
+      <div class="member-avatar">${memberInitials(m.jina_kamili)}</div>
+      <div class="member-info"><p class="member-name">${escapeHtml(m.jina_kamili)}</p><p class="member-phone">📱 ${escapeHtml(m.namba_simu)} · Salio: ${pesa(m.salio)}</p></div>
+      <div class="member-actions">${can('treasurer')?`<button class="btn btn-sm btn-red" onclick="ongezaFaini('${m.id}')">⚠ Weka Faini</button>`:''}</div>
+    </div>`).join('');
+}
+function ongezaFaini(memberId){
+  if(!can('treasurer')){ toast('Hii kazi ni ya Mweka Hazina pekee'); return; }
+  const member=allWanachama.find(m=>m.id===memberId); if(!member) return;
+  DB.patch(STORAGE.MEMBERS,memberId,{salio:Number(member.salio||0)-FAINI,total_fines:Number(member.total_fines||0)+FAINI});
+  DB.post(STORAGE.ANNOUNCEMENTS,{title:'Taarifa ya Faini',body:`Umewekewa faini ya ${pesa(FAINI)} kutokana na kutotimiza kiwango cha chini cha salio.`,target:'single',recipient_ids:[memberId],priority:'urgent',sent_by_name:currentLeader.cheo,sent_by_role:currentLeader.role});
+  toast(`Faini ya ${pesa(FAINI)} imewekwa`);
+  renderLeaderDashboard();
+}
+
+// ═══════════════════════════════════════════
+// ANNOUNCEMENTS (KATIBU)
+// ═══════════════════════════════════════════
+function toggleAudiencePanel(){
+  const type=$('ann-audience-type')?.value;
+  const panel=$('ann-audience-panel'); if(!panel) return;
+  if(type==='selected'){ panel.style.display='block'; populateAudienceCheckboxes(); }
+  else{ panel.style.display='none'; }
+}
+function populateAudienceCheckboxes(){
+  const container=$('audience-checkboxes'); if(!container) return;
+  const approved=DB.get(STORAGE.MEMBERS).filter(m=>m.status==='approved');
+  container.innerHTML=approved.length?approved.map(m=>`
+    <label class="audience-item" for="aud-${m.id}">
+      <input type="checkbox" id="aud-${m.id}" value="${m.id}" onchange="updateAudienceCount()"/>
+      <div><div style="font-weight:700;font-size:13px;">${escapeHtml(m.jina_kamili)}</div><div style="font-size:11px;color:var(--muted);">${escapeHtml(m.namba_simu)}</div></div>
+    </label>`).join(''):'<p style="color:var(--muted);font-size:13px;padding:8px;">Hakuna wanachama walioidhinishwa bado.</p>';
+}
+function updateAudienceCount(){
+  const checked=document.querySelectorAll('#audience-checkboxes input:checked').length;
+  const el=$('audience-selected-count'); if(el) el.textContent=`${checked} wamechaguliwa`;
+}
+function getSelectedAudienceIds(){
+  return Array.from(document.querySelectorAll('#audience-checkboxes input:checked')).map(el=>el.value);
+}
+function tutaTangazo(){
+  if(!can('secretary')){ toast('Kutuma matangazo ni kazi ya Katibu pekee'); return; }
+  const title=$('ann-title')?.value.trim();
+  const body=$('ann-body')?.value.trim();
+  const priority=$('ann-priority')?.value||'normal';
+  const audienceType=$('ann-audience-type')?.value||'all';
+  const sendWA=$('ann-send-wa')?.checked;
+  if(!title||!body){ setAlert('announce-compose-alert','Weka kichwa na ujumbe wa tangazo.','error'); return; }
+  let recipientIds=[],targetMembers=[];
+  const approved=DB.get(STORAGE.MEMBERS).filter(m=>m.status==='approved');
+  if(audienceType==='all'){ recipientIds=approved.map(m=>m.id); targetMembers=approved; }
+  else{
+    recipientIds=getSelectedAudienceIds();
+    if(!recipientIds.length){ setAlert('announce-compose-alert','Chagua angalau mwanachama mmoja.','error'); return; }
+    targetMembers=approved.filter(m=>recipientIds.includes(m.id));
+  }
+  DB.post(STORAGE.ANNOUNCEMENTS,{title,body,priority,target:audienceType==='all'?'all':'selected',recipient_ids:recipientIds,audience_count:recipientIds.length,sent_by_name:currentLeader.cheo,sent_by_role:currentLeader.role,wa_sent:sendWA});
+  if(sendWA&&targetMembers.length){
+    let delay=0;
+    targetMembers.forEach(m=>{
+      setTimeout(()=>{ sendMemberWhatsApp(m.namba_simu,`*NGARA YACHU - TANGAZO*\n${priorityIcon(priority)} *${title}*\n\n${body}\n\nAsante.`); },delay);
+      delay+=600;
+    });
+    toast(`Tangazo limetumwa. WhatsApp inafunguliwa kwa wanachama ${targetMembers.length}...`);
+  }else{
+    toast('Tangazo limehifadhiwa kwa mafanikio');
+  }
+  $('ann-title').value=''; $('ann-body').value=''; $('ann-audience-type').value='all';
+  $('ann-audience-panel').style.display='none'; $('ann-priority').value='normal';
+  renderLeaderDashboard();
+  setAlert('announce-compose-alert',`✅ Tangazo limetumwa kwa wanachama ${targetMembers.length}.${sendWA?' WhatsApp ilitumwa kwa kila mwanachama.':''}`, 'success');
+}
+function renderAdminAnnouncements(){
+  const el=$('admin-announcements-list'); if(!el) return;
+  const tangazo=DB.get(STORAGE.ANNOUNCEMENTS).filter(a=>a.sent_by_role);
+  if(!tangazo.length){ el.innerHTML=`<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Hakuna matangazo yaliyotumwa bado.</p>`; return; }
+  el.innerHTML=tangazo.slice().reverse().map(a=>`
+    <div class="announce-card">
+      <div class="announce-card-header">
+        <div>
+          <div class="announce-card-title">${priorityIcon(a.priority)} ${escapeHtml(a.title||'Tangazo')}</div>
+          <div class="dai-sub">Na: ${escapeHtml(a.sent_by_name||'—')} · ${new Date(a.created_at).toLocaleString('en-GB')}</div>
+          <div class="dai-sub">Wanachama: ${a.audience_count||0} · WA: ${a.wa_sent?'✅ Ilitumwa':'❌ Haikutumwa'}</div>
+        </div>
+        <span class="badge badge-announce">${priorityLabel(a.priority)}</span>
+      </div>
+      <div class="announce-card-body">${escapeHtml(a.body||'').replace(/\n/g,'<br>')}</div>
+      <div class="announce-card-actions">
+        ${can('secretary')?`<button class="btn btn-sm btn-red" onclick="futaTangazo('${a.id}')">🗑 Futa</button>`:''}
+        ${can('secretary')&&a.wa_sent===false?`<button class="btn btn-sm" style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;" onclick="retryWATangazo('${a.id}')">📱 Tuma WhatsApp</button>`:''}
+      </div>
+    </div>`).join('');
+}
+function futaTangazo(id){
+  if(!can('secretary')){ toast('Hii kazi ni ya Katibu pekee'); return; }
+  if(!confirm('Una uhakika unataka kufuta tangazo hili?')) return;
+  DB.delete(STORAGE.ANNOUNCEMENTS,id); toast('Tangazo limefutwa'); renderLeaderDashboard();
+}
+function retryWATangazo(id){
+  if(!can('secretary')){ toast('Hii kazi ni ya Katibu pekee'); return; }
+  const ann=DB.get(STORAGE.ANNOUNCEMENTS).find(a=>a.id===id); if(!ann) return;
+  const members=DB.get(STORAGE.MEMBERS).filter(m=>m.status==='approved'&&(ann.target==='all'||ann.recipient_ids?.includes(m.id)));
+  let delay=0;
+  members.forEach(m=>{ setTimeout(()=>{ sendMemberWhatsApp(m.namba_simu,`*NGARA YACHU - TANGAZO*\n${priorityIcon(ann.priority)} *${ann.title}*\n\n${ann.body}\n\nAsante.`); },delay); delay+=600; });
+  DB.patch(STORAGE.ANNOUNCEMENTS,id,{wa_sent:true});
+  toast(`WhatsApp inatumwa kwa wanachama ${members.length}...`); renderLeaderDashboard();
+}
+
+// ═══════════════════════════════════════════
+// MEMBERS LIST
+// ═══════════════════════════════════════════
+function renderWanachamaList(){
+  const pending=allWanachama.filter(m=>m.status==='pending');
+  const approved=allWanachama.filter(m=>m.status==='approved');
+  $('wanachama-list').innerHTML=`
+    <div class="card">
+      <div class="card-title">🆕 Maombi Mapya ya Usajili</div>
+      ${pending.length?pending.map(m=>memberRowHTML(m,true)).join(''):`<p style="color:var(--muted);font-size:13px;">Hakuna maombi mapya.</p>`}
+    </div>
+    <div class="card">
+      <div class="card-title">👥 Wanachama Walioidhinishwa</div>
+      ${approved.length?approved.map(m=>memberRowHTML(m,false)).join(''):`<p style="color:var(--muted);font-size:13px;">Hakuna wanachama bado.</p>`}
+    </div>`;
+}
+function memberRowHTML(m,isPending=false){
+  return `
+    <div class="member-row">
+      <div class="member-avatar">${memberInitials(m.jina_kamili)}</div>
+      <div class="member-info">
+        <p class="member-name">${escapeHtml(m.jina_kamili)}</p>
+        <p class="member-phone">📱 ${escapeHtml(m.namba_simu)} · ${pesa(m.salio)}</p>
+        <span class="badge ${badgeStatus(m.status)}" style="margin-top:4px;">${escapeHtml(m.status)}</span>
+      </div>
+      <div class="member-actions">
+        <button class="btn btn-sm btn-primary" onclick="angaliaMwanachama('${m.id}')">👁</button>
+        ${isPending&&(can('secretary')||can('chairperson'))?`<button class="btn btn-sm btn-green" onclick="idhinishaMwanachama('${m.id}')">✅ Idhinisha</button>`:''}
+        ${(can('secretary')||can('chairperson'))?`<button class="btn btn-sm btn-red" onclick="futaMwanachama('${m.id}')">🗑 Futa</button>`:''}
+      </div>
+    </div>`;
+}
+function idhinishaMwanachama(id){
+  if(!(can('secretary')||can('chairperson'))){ toast('Huna ruhusa ya kuidhinisha mwanachama'); return; }
+  DB.patch(STORAGE.MEMBERS,id,{status:'approved'});
+  DB.post(STORAGE.ANNOUNCEMENTS,{title:'Usajili Wako Umeidhinishwa',body:'Karibu rasmi kwenye kikundi cha Nyangw\'ale Family Group (NYAFAG). Sasa unaweza kuingia kwenye akaunti yako.',target:'single',recipient_ids:[id],priority:'info',sent_by_name:currentLeader.cheo,sent_by_role:currentLeader.role,wa_sent:false});
+  toast('Mwanachama ameidhinishwa'); renderLeaderDashboard();
+}
+function futaMwanachama(id){
+  if(!(can('secretary')||can('chairperson'))){ toast('Huna ruhusa ya kufuta mwanachama'); return; }
+  const m=allWanachama.find(x=>x.id===id); if(!m) return;
+  if(!confirm(`Una uhakika unataka kumfuta ${m.jina_kamili}?`)) return;
+  DB.delete(STORAGE.MEMBERS,id);
+  DB.set(STORAGE.DEPENDANTS,DB.get(STORAGE.DEPENDANTS).filter(t=>t.mwanachama_id!==id));
+  DB.set(STORAGE.CLAIMS,DB.get(STORAGE.CLAIMS).filter(c=>c.mwanachama_id!==id));
+  DB.set(STORAGE.PAYMENTS,DB.get(STORAGE.PAYMENTS).filter(p=>p.mwanachama_id!==id));
+  toast('Mwanachama amefutwa'); renderLeaderDashboard();
+}
+function angaliaMwanachama(id){
+  const m=allWanachama.find(x=>x.id===id);
+  const teg=allTegemezi.filter(t=>t.mwanachama_id===id);
+  if(!m) return;
+  const tegHTML=teg.length?teg.map(t=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--muted)">${escapeHtml(t.uhusiano)}</span><strong>${escapeHtml(t.jina_kamili)}</strong></div>`).join(''):'<p style="color:var(--muted);font-size:13px;">Hakuna tegemezi</p>';
+  openModal(m.jina_kamili,`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">📱 ${escapeHtml(m.namba_simu)} · Salio: <strong>${pesa(m.salio)}</strong></p><p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Faini Jumla: <strong>${pesa(m.total_fines||0)}</strong></p><p style="font-weight:600;font-size:12px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;">Tegemezi</p>${tegHTML}`);
+}
+
+// ═══════════════════════════════════════════
+// RAMBIRAMBI (Treasurer / Chairperson)
+// ═══════════════════════════════════════════
+// FIX #11: render into 'madai-admin-list' (matches HTML)
+// FIX #12,13,14: use hakikiRambirambi, idhinishaRambirambiFinal, kataaRambirambi consistently
+function renderRambirambiAdmin(){
+  const el=$('madai-admin-list'); if(!el) return;
+  if(!allRambirambi.length){ el.innerHTML=safuTupu('Hakuna ombi la rambirambi'); return; }
+  const approvedClaims=allRambirambi.filter(d=>d.status==='approved');
+  el.innerHTML=`
+    ${allRambirambi.slice().reverse().map(d=>{
+      const m=allWanachama.find(x=>x.id===d.mwanachama_id)||{};
+      return `
+        <div class="dai-card">
+          <div class="dai-card-header">
+            <div>
+              <div class="dai-title">${escapeHtml(m.jina_kamili||'—')} — ${escapeHtml(d.uhusiano)}</div>
+              <div class="dai-sub">📱 ${escapeHtml(m.namba_simu||'—')} · Tegemezi: ${escapeHtml(d.jina_tegemezi||'—')}</div>
+              <div class="dai-sub">Marehemu: ${escapeHtml(d.jina_marehemu)}</div>
+              <div class="dai-sub">Tarehe ya kifo: ${d.tarehe_kifo||'—'}</div>
+              <div class="dai-sub">Kiasi: ${pesa(d.amount||0)}</div>
+              ${d.status==='approved'?`<div class="dai-sub" style="color:#16a34a;font-weight:700;">💰 Rambirambi Imetolewa: ${d.chairperson_approved_at?new Date(d.chairperson_approved_at).toLocaleDateString('en-GB'):'—'}</div>`:''}
+            </div>
+            <span class="badge ${badgeStatus(d.status)}">${escapeHtml(d.status)}</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+            ${d.status==='pending'&&can('treasurer')?`<button class="btn btn-sm btn-green" onclick="hakikiRambirambi('${d.id}')">✅ Hakiki</button>`:''}
+            ${d.status==='reviewed_by_treasurer'&&can('chairperson')?`<button class="btn btn-sm btn-green" onclick="idhinishaRambirambiFinal('${d.id}')">🏁 Idhini ya Mwisho</button>`:''}
+            ${(d.status==='pending'||d.status==='reviewed_by_treasurer')&&(can('treasurer')||can('chairperson'))?`<button class="btn btn-sm btn-red" onclick="kataaRambirambi('${d.id}')">❌ Kataa</button>`:''}
+          </div>
+        </div>`; }).join('')}
+    <div class="card" style="margin-top:18px;">
+      <div class="card-title">💰 Wanachama Waliopokea Rambirambi</div>
+      ${approvedClaims.length
+        ?approvedClaims.slice().reverse().map(d=>{
+          const m=allWanachama.find(x=>x.id===d.mwanachama_id)||{};
+          return `<div class="member-row">
+            <div class="member-avatar">${memberInitials(m.jina_kamili||'MS')}</div>
+            <div class="member-info">
+              <p class="member-name">${escapeHtml(m.jina_kamili||'—')}</p>
+              <p class="member-phone">📱 ${escapeHtml(m.namba_simu||'—')} · ${escapeHtml(d.uhusiano||'—')} · ${escapeHtml(d.jina_tegemezi||'—')}</p>
+              <p class="member-phone">💰 ${pesa(d.amount||MSAADA)} · 📅 ${d.chairperson_approved_at?new Date(d.chairperson_approved_at).toLocaleDateString('en-GB'):'—'}</p>
+            </div>
+          </div>`; }).join('')
+        :`<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Hakuna mwanachama aliyepokea rambirambi bado.</p>`}
+    </div>`;
+}
+
+function hakikiRambirambi(rambirambiId){
+  if(!can('treasurer')){ toast('Hii kazi ni ya Mweka Hazina'); return; }
+  const claim=allRambirambi.find(d=>d.id===rambirambiId); if(!claim) return;
+  const member=allWanachama.find(m=>m.id===claim.mwanachama_id); if(!member) return;
+  DB.patch(STORAGE.CLAIMS,rambirambiId,{status:'reviewed_by_treasurer',approved_by_treasurer:true,treasurer_approved_at:sasaISO(),treasurer_approved_by:currentLeader.user});
+  notifyMwenyekitiFinalApproval(member,claim);
+  toast('Ombi la rambirambi limehakikiwa na kutumwa kwa Mwenyekiti');
+  renderLeaderDashboard();
+}
+function idhinishaRambirambiFinal(rambirambiId){
+  if(!can('chairperson')){ toast('Idhini ya mwisho ni ya Mwenyekiti tu'); return; }
+  const claim=allRambirambi.find(d=>d.id===rambirambiId); if(!claim) return;
+  const member=allWanachama.find(m=>m.id===claim.mwanachama_id); if(!member) return;
+  DB.patch(STORAGE.CLAIMS,rambirambiId,{status:'approved',approved_by_chairperson:true,chairperson_approved_at:sasaISO(),chairperson_approved_by:currentLeader.user,rambirambi_paid:true,rambirambi_paid_at:sasaISO()});
+  DB.post(STORAGE.ANNOUNCEMENTS,{title:'Ombi lako la Rambirambi Limeidhinishwa',body:`Ombi lako la rambirambi ya msiba limeidhinishwa. Kiasi kilichoidhinishwa ni ${pesa(claim.amount||MSAADA)}.`,target:'single',recipient_ids:[claim.mwanachama_id],priority:'info',sent_by_name:currentLeader.cheo,sent_by_role:currentLeader.role,wa_sent:false});
+  notifyMemberApproval(member,claim);
+  toast('Ombi la rambirambi limeidhinishwa rasmi');
+  renderLeaderDashboard();
+}
+function kataaRambirambi(id){
+  if(!(can('treasurer')||can('chairperson'))){ toast('Huna ruhusa ya kukataa ombi la rambirambi'); return; }
+  const reason=prompt('Andika sababu ya kukataa ombi la rambirambi:');
+  if(reason===null) return;
+  const claim=allRambirambi.find(d=>d.id===id); if(!claim) return;
+  const member=allWanachama.find(m=>m.id===claim.mwanachama_id); if(!member) return;
+  DB.patch(STORAGE.CLAIMS,id,{status:'rejected',reject_reason:reason});
+  DB.post(STORAGE.ANNOUNCEMENTS,{title:'Ombi lako la Rambirambi Limekataliwa',body:`Ombi lako la rambirambi limekataliwa. Sababu: ${reason}`,target:'single',recipient_ids:[claim.mwanachama_id],priority:'urgent',sent_by_name:currentLeader.cheo,sent_by_role:currentLeader.role,wa_sent:false});
+  notifyMemberRejection(member,claim,reason);
+  toast('Ombi la rambirambi limekataliwa');
+  renderLeaderDashboard();
+}
+
+// ═══════════════════════════════════════════
+// PAYMENTS (Treasurer)
+// ═══════════════════════════════════════════
+function populateMalipoMembers(){
+  const sel=$('malipo-mwanachama'); if(!sel) return;
+  const approved=allWanachama.filter(m=>m.status==='approved');
+  sel.innerHTML=`<option value="">Chagua mwanachama...</option>`;
+  approved.forEach(m=>{ const o=document.createElement('option'); o.value=m.id; o.textContent=`${m.jina_kamili} — ${m.namba_simu}`; sel.appendChild(o); });
+}
+function ongezaMalipo(){
+  if(!can('treasurer')){ toast('Hii kazi ni ya Mweka Hazina pekee'); return; }
+  const memberId=$('malipo-mwanachama')?.value;
+  const kiasi=Number($('malipo-kiasi')?.value||0);
+  const tarehe=$('malipo-tarehe')?.value||leoISO();
+  const maelezo=$('malipo-maelezo')?.value.trim();
+  if(!memberId||kiasi<=0){ setAlert('malipo-alert','Chagua mwanachama na weka kiasi sahihi.','error'); return; }
+  const member=allWanachama.find(m=>m.id===memberId); if(!member){ setAlert('malipo-alert','Mwanachama hajapatikana.','error'); return; }
+  DB.post(STORAGE.PAYMENTS,{mwanachama_id:memberId,kiasi,tarehe,maelezo:maelezo||'Malipo ya mwanachama',recorded_by:currentLeader.user,recorded_role:currentLeader.role});
+  DB.patch(STORAGE.MEMBERS,memberId,{salio:Number(member.salio||0)+kiasi,jumla_michango:Number(member.jumla_michango||0)+kiasi,last_payment_date:tarehe});
+  DB.post(STORAGE.ANNOUNCEMENTS,{title:'Malipo Yamepokelewa',body:`Malipo yako ya ${pesa(kiasi)} yamepokelewa na kuhifadhiwa kwenye mfumo.`,target:'single',recipient_ids:[memberId],priority:'info',sent_by_name:currentLeader.cheo,sent_by_role:currentLeader.role,wa_sent:false});
+  notifyMemberPayment(member,kiasi);
+  setAlert('malipo-alert','✅ Malipo yamehifadhiwa kwa mafanikio.','success');
+  toast('Malipo yamehifadhiwa');
+  $('malipo-kiasi').value=''; $('malipo-maelezo').value=''; $('malipo-mwanachama').value='';
+  renderLeaderDashboard();
+}
+function renderMalipoHistory(){
+  const el=$('malipo-history'); if(!el) return;
+  if(!allMalipo.length){ el.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Hakuna malipo bado</td></tr>'; return; }
+  el.innerHTML=allMalipo.slice().reverse().map(p=>{ const m=allWanachama.find(x=>x.id===p.mwanachama_id)||{}; return `<tr><td>${p.tarehe||'—'}</td><td>${escapeHtml(m.jina_kamili||'—')}</td><td><strong>${pesa(p.kiasi||0)}</strong></td><td>${escapeHtml(p.maelezo||'—')}</td></tr>`; }).join('');
+}
+
+// ═══════════════════════════════════════════
+// FINANCIAL REPORT
+// ═══════════════════════════════════════════
+function renderMichangoList(){
+  const el=$('michango-list'); if(!el) return;
+  const totalContributions=allWanachama.reduce((a,b)=>a+Number(b.jumla_michango||0),0);
+  const totalFines=allWanachama.reduce((a,b)=>a+Number(b.total_fines||0),0);
+  const totalBalance=allWanachama.reduce((a,b)=>a+Number(b.salio||0),0);
+  const approvedClaims=allRambirambi.filter(x=>x.status==='approved');
+  const totalClaimsApproved=approvedClaims.reduce((a,b)=>a+Number(b.amount||0),0);
+  el.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div class="card-title" style="margin-bottom:0;">📊 Group Financial Report</div>
+        ${can('treasurer')?`<button class="btn btn-primary" onclick="downloadFinancialReport()">📥 Download Financial Report</button>`:''}
+      </div><br>
+      <div class="table-wrap"><table><tbody>
+        <tr><td>Jumla ya Michango</td><td><strong>${pesa(totalContributions)}</strong></td></tr>
+        <tr><td>Jumla ya Faini</td><td><strong>${pesa(totalFines)}</strong></td></tr>
+        <tr><td>Jumla ya Salio la Wanachama</td><td><strong>${pesa(totalBalance)}</strong></td></tr>
+        <tr><td>Rambirambi Zilizoidhinishwa</td><td><strong>${approvedClaims.length}</strong></td></tr>
+        <tr><td>Jumla ya Rambirambi Zilizoidhinishwa</td><td><strong>${pesa(totalClaimsApproved)}</strong></td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">👥 Muhtasari wa Wanachama</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Jina</th><th>Salio</th><th>Michango</th><th>Faini</th></tr></thead>
+        <tbody>${allWanachama.filter(m=>m.status==='approved').map(m=>`<tr><td>${escapeHtml(m.jina_kamili)}</td><td>${pesa(m.salio||0)}</td><td>${pesa(m.jumla_michango||0)}</td><td>${pesa(m.total_fines||0)}</td></tr>`).join('')||`<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Hakuna data bado</td></tr>`}</tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">💰 Report ya Rambirambi Zilizotolewa</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Jina la Mwanachama</th><th>Tegemezi</th><th>Marehemu</th><th>Kiasi</th><th>Tarehe ya Idhini</th></tr></thead>
+        <tbody>${approvedClaims.length
+          ?approvedClaims.slice().reverse().map(c=>{ const m=allWanachama.find(x=>x.id===c.mwanachama_id)||{}; return `<tr><td>${escapeHtml(m.jina_kamili||'—')}</td><td>${escapeHtml((c.uhusiano||'—')+' — '+(c.jina_tegemezi||'—'))}</td><td>${escapeHtml(c.jina_marehemu||'—')}</td><td><strong>${pesa(c.amount||MSAADA)}</strong></td><td>${c.chairperson_approved_at?new Date(c.chairperson_approved_at).toLocaleDateString('en-GB'):'—'}</td></tr>`; }).join('')
+          :`<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Hakuna rambirambi iliyotolewa bado</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+
+function downloadFinancialReport(){
+  if(!can('treasurer')){ toast('Report inaweza kudownloadiwa na Mweka Hazina pekee'); return; }
+  const approved=allWanachama.filter(m=>m.status==='approved');
+  const approvedClaims=allRambirambi.filter(x=>x.status==='approved');
+  const headers=['Jina Kamili','Namba ya Simu','Salio','Jumla ya Michango','Jumla ya Faini','Tarehe ya Mwisho ya Malipo'];
+  const rows=approved.map(m=>[m.jina_kamili||'',m.namba_simu||'',Number(m.salio||0),Number(m.jumla_michango||0),Number(m.total_fines||0),m.last_payment_date||'']);
+  const rambirambiHeaders=['Jina la Mwanachama','Namba ya Simu','Tegemezi','Marehemu','Kiasi cha Rambirambi','Tarehe ya Idhini'];
+  // FIX #16: use correct variable name rambirambiRows (not msaadaRows)
+  const rambirambiRows=approvedClaims.map(c=>{ const m=allWanachama.find(x=>x.id===c.mwanachama_id)||{}; return [m.jina_kamili||'',m.namba_simu||'',`${c.uhusiano||''} - ${c.jina_tegemezi||''}`,c.jina_marehemu||'',Number(c.amount||0),c.chairperson_approved_at?new Date(c.chairperson_approved_at).toLocaleDateString('en-GB'):'']; });
+  const csvSections=['MUHTASARI WA WANACHAMA',headers.join(','),...rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')),'','REPORT YA RAMBIRAMBI ZILIZOTOLEWA',rambirambiHeaders.join(','),...rambirambiRows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','))];
+  const csv=csvSections.join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`financial_report_ngara_yachu_${leoISO()}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('Financial report imedownloadiwa');
+}
+
+// ═══════════════════════════════════════════
+// CHILD FORMS
+// ═══════════════════════════════════════════
+function ongezaMtotoForm(){
+  watotoCount++;
+  const c=$('watoto-container'); if(!c) return;
+  const wrap=document.createElement('div'); wrap.className='form-group';
+  wrap.innerHTML=`<label>Mtoto ${watotoCount}</label><input type="text" class="form-input" id="teg-mtoto${watotoCount}" placeholder="Jina (hiari)"/>`;
+  c.appendChild(wrap);
+  toast(`Fomu ya Mtoto ${watotoCount} imeongezwa`);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  showScreen('screen-welcome');
+  if($('malipo-tarehe')) $('malipo-tarehe').value=leoISO();
+  if($('rambirambi-tarehe')) $('rambirambi-tarehe').value=leoISO();
+  ongezaMtotoForm();
+  console.log('NYAFAG v1 — Nyangw\'ale Family Group — Imepakiwa kwa mafanikio.');
+});
+</script>
+</body>
+</html>
